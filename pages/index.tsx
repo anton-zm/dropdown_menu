@@ -1,6 +1,25 @@
+import { DropdownMenu } from '@/components/dropdown-menu';
+import { IDropdownOption } from '@/types';
 import Head from 'next/head';
+import styled from 'styled-components';
 
 export default function Home() {
+    const menuOptionsData: Record<string, IDropdownOption[]> = {
+        menu1: [
+            {
+                text: 'Поделиться',
+                onClick: () => console.log('SHARE')
+            },
+            {
+                text: 'Удалить',
+                onClick: () => console.log('DELETE')
+            },
+            {
+                text: 'Редактировать',
+                onClick: () => console.log('EDIT')
+            }
+        ]
+    };
     return (
         <>
             <Head>
@@ -12,7 +31,35 @@ export default function Home() {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <main></main>
+            <main>
+                <Container className="flex-col between">
+                    <div className="flex between">
+                        <DropdownMenu
+                            trigger="Menu 1"
+                            options={menuOptionsData.menu1}
+                        />
+                        <DropdownMenu
+                            trigger="Menu 1"
+                            options={menuOptionsData.menu1}
+                        />
+                    </div>
+                    <div className="flex between">
+                        <DropdownMenu
+                            trigger="Menu 1"
+                            options={menuOptionsData.menu1}
+                        />
+                        <DropdownMenu
+                            trigger="Menu 1"
+                            options={menuOptionsData.menu1}
+                        />
+                    </div>
+                </Container>
+            </main>
         </>
     );
 }
+
+const Container = styled.div`
+    height: 100vh;
+    padding: 32px;
+`;
