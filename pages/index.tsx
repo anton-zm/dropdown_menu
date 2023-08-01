@@ -8,24 +8,25 @@ import EditIcon from '@/public/edit.svg';
 
 export default function Home() {
     const menuOptionsData: Record<string, IDropdownOption[]> = {
-        menu1: [
+        menu: [
             {
                 text: 'Поделиться',
-                onClick: () => console.log('SHARE'),
+                onClick: () => alert('Успех!'),
                 icon: <ShareIcon />
             },
             {
                 text: 'Удалить',
-                onClick: () => console.log('DELETE'),
+                onClick: () => confirm('Удалить? Уверен?'),
                 icon: <TrashIcon />
             },
             {
                 text: 'Редактировать',
-                onClick: () => console.log('EDIT'),
+                onClick: () => alert('Пошли редактировать куда-то...'),
                 icon: <EditIcon />
             }
         ]
     };
+
     return (
         <>
             <Head>
@@ -43,24 +44,24 @@ export default function Home() {
                         <DropdownMenu
                             trigger="Menu 1"
                             id="menu1"
-                            options={menuOptionsData.menu1}
+                            options={menuOptionsData.menu}
                         />
                         <DropdownMenu
                             trigger="Menu 2"
                             id="menu2"
-                            options={menuOptionsData.menu1}
+                            options={menuOptionsData.menu}
                         />
                     </div>
                     <div className="flex between">
                         <DropdownMenu
                             trigger="Menu 3"
                             id="menu3"
-                            options={menuOptionsData.menu1}
+                            options={menuOptionsData.menu}
                         />
                         <DropdownMenu
                             trigger="Menu 4"
                             id="menu4"
-                            options={menuOptionsData.menu1}
+                            options={menuOptionsData.menu}
                         />
                     </div>
                 </Container>

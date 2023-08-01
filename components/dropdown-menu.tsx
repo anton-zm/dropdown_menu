@@ -61,7 +61,8 @@ export const DropdownMenu = observer(
             }
         };
 
-        const toggleMenu = () => {
+        const toggleMenu: React.MouseEventHandler<HTMLDivElement> = event => {
+            event.stopPropagation();
             if (thisIsActive) {
                 setOpened(!opened);
             } else {
@@ -81,7 +82,16 @@ export const DropdownMenu = observer(
                     <Menu location={location} className="xxx">
                         {options.map((e, i) => (
                             <MenuItem key={i} className="flex between xxx">
-                                <p onClick={e.onClick} className="xxx">
+                                <p
+                                    onClick={(
+                                        event: React.MouseEvent<HTMLParagraphElement>
+                                    ) => {
+                                        event.stopPropagation();
+                                        e.onClick();
+                                        setOpened(false);
+                                    }}
+                                    className="xxx"
+                                >
                                     {e.text}
                                 </p>
                                 {e.icon}
