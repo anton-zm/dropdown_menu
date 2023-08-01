@@ -1,13 +1,15 @@
+import { store } from '@/store';
 import { DropdownMenuProps, Location } from '@/types';
 import { observer } from 'mobx-react';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 export const DropdownMenu = observer(
-    ({ options, trigger }: DropdownMenuProps) => {
+    ({ options, trigger, id }: DropdownMenuProps) => {
         const [opened, setOpened] = useState(false);
         const [location, setLocation] = useState<Location>('top-right');
         const triggerRef = useRef<HTMLDivElement>(null);
+        const thisIsActive = store.activeId === id;
 
         useEffect(() => {
             getLocation();
@@ -20,6 +22,12 @@ export const DropdownMenu = observer(
             };
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
+
+        useEffect(() => {
+            if (!thisIsActive) {
+                setOpened(false);
+            }
+        }, [thisIsActive]);
 
         const outsideClick = (event: MouseEvent) => {
             if (!(event.target as Element)!.classList.contains('xxx')) {
@@ -53,10 +61,19 @@ export const DropdownMenu = observer(
             }
         };
 
+        const toggleMenu = () => {
+            if (thisIsActive) {
+                setOpened(!opened);
+            } else {
+                store.setActiveId(id);
+                setOpened(true);
+            }
+        };
+
         return (
             <Trigger
                 className="clickable relative xxx"
-                onClick={() => setOpened(!opened)}
+                onClick={toggleMenu}
                 ref={triggerRef}
             >
                 <TriggerText className="xxx">{trigger}</TriggerText>

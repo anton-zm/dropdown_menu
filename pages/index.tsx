@@ -42,20 +42,24 @@ export default function Home() {
                     <div className="flex between">
                         <DropdownMenu
                             trigger="Menu 1"
+                            id="menu1"
                             options={menuOptionsData.menu1}
                         />
                         <DropdownMenu
                             trigger="Menu 2"
+                            id="menu2"
                             options={menuOptionsData.menu1}
                         />
                     </div>
                     <div className="flex between">
                         <DropdownMenu
                             trigger="Menu 3"
+                            id="menu3"
                             options={menuOptionsData.menu1}
                         />
                         <DropdownMenu
                             trigger="Menu 4"
+                            id="menu4"
                             options={menuOptionsData.menu1}
                         />
                     </div>

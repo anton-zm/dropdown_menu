@@ -13,6 +13,7 @@ export interface IDropdownOption {
 }
 
 export interface DropdownMenuProps {
+    id: string;
     options: IDropdownOption[];
     trigger: string;
 }
