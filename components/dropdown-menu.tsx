@@ -7,7 +7,7 @@ import styled from 'styled-components';
 export const DropdownMenu = observer(
     ({ options, trigger, id }: DropdownMenuProps) => {
         const [opened, setOpened] = useState(false);
-        const [location, setLocation] = useState<Location>('top-right');
+        const [location, setLocation] = useState<Location>(Location.TOP_LEFT);
         const triggerRef = useRef<HTMLDivElement>(null);
         const thisIsActive = store.activeId === id;
 
@@ -51,13 +51,13 @@ export const DropdownMenu = observer(
             const spaceRight = windowWidth - triggerRect.right;
 
             if (spaceRight >= spaceLeft && spaceBottom >= spaceTop) {
-                return 'top-left';
+                return Location.TOP_LEFT;
             } else if (spaceLeft >= spaceRight && spaceBottom >= spaceTop) {
-                return 'top-right';
+                return Location.TOP_RIGHT;
             } else if (spaceRight >= spaceLeft && spaceTop >= spaceBottom) {
-                return 'bottom-left';
+                return Location.BOTTON_LEFT;
             } else {
-                return 'bottom-right';
+                return Location.BOTTON_RIGHT;
             }
         };
 
