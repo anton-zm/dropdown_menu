@@ -1,29 +1,70 @@
 import { DropdownMenuProps, Location } from '@/types';
 import { observer } from 'mobx-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 export const DropdownMenu = observer(
     ({ options, trigger }: DropdownMenuProps) => {
         const [opened, setOpened] = useState(false);
         const [location, setLocation] = useState<Location>('top-right');
+        const triggerRef = useRef<HTMLDivElement>(null);
 
         useEffect(() => {
-            //TODO
-            setLocation('top-left');
+            getLocation();
+            window.addEventListener('click', outsideClick);
+            window.addEventListener('resize', getLocation);
+
+            return () => {
+                window.removeEventListener('click', outsideClick);
+                window.removeEventListener('resize', getLocation);
+            };
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
+
+        const outsideClick = (event: MouseEvent) => {
+            if (!(event.target as Element)!.classList.contains('xxx')) {
+                setOpened(false);
+            }
+        };
+
+        const getLocation = () => {
+            const newLocation = calculateLocation(triggerRef.current!);
+            setLocation(newLocation);
+        };
+
+        const calculateLocation = (triggerElement: HTMLElement): Location => {
+            const triggerRect = triggerElement.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            const windowWidth = window.innerWidth;
+
+            const spaceTop = triggerRect.top;
+            const spaceBottom = windowHeight - triggerRect.bottom;
+            const spaceLeft = triggerRect.left;
+            const spaceRight = windowWidth - triggerRect.right;
+
+            if (spaceRight >= spaceLeft && spaceBottom >= spaceTop) {
+                return 'top-left';
+            } else if (spaceLeft >= spaceRight && spaceBottom >= spaceTop) {
+                return 'top-right';
+            } else if (spaceRight >= spaceLeft && spaceTop >= spaceBottom) {
+                return 'bottom-left';
+            } else {
+                return 'bottom-right';
+            }
+        };
 
         return (
             <Trigger
-                className="clickable relative"
+                className="clickable relative xxx"
                 onClick={() => setOpened(!opened)}
+                ref={triggerRef}
             >
-                <TriggerText>{trigger}</TriggerText>
+                <TriggerText className="xxx">{trigger}</TriggerText>
                 {opened && (
-                    <Menu location={location}>
+                    <Menu location={location} className="xxx">
                         {options.map((e, i) => (
-                            <MenuItem key={i} className="flex between">
-                                <p onClick={e.onClick} className="">
+                            <MenuItem key={i} className="flex between xxx">
+                                <p onClick={e.onClick} className="xxx">
                                     {e.text}
                                 </p>
                                 {e.icon}
@@ -47,8 +88,34 @@ const TriggerText = styled.p`
 
 const Menu = styled.div<{ location: Location }>`
     position: absolute;
-    top: calc(100% + 10px);
-    left: 0;
+    top: ${props => {
+        if (props.location.startsWith('top')) {
+            return 'calc(100% + 10px)';
+        } else {
+            return 'auto';
+        }
+    }};
+    bottom: ${props => {
+        if (props.location.startsWith('bottom')) {
+            return 'calc(100% + 10px)';
+        } else {
+            return 'auto';
+        }
+    }};
+    left: ${props => {
+        if (props.location.endsWith('left')) {
+            return 0;
+        } else {
+            return 'auto';
+        }
+    }};
+    right: ${props => {
+        if (props.location.endsWith('right')) {
+            return 0;
+        } else {
+            return 'auto';
+        }
+    }};
     width: 260px;
     max-height: 200px;
     overflow-y: auto;
